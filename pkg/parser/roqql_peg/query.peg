@@ -12,79 +12,79 @@ Expr
 
 OrExpr
     <- head:AndExpr tail:OrTail {
-        return buildOr(head, tail), nil
+        return buildOr(head, tail)
     }
 
 OrTail
-    <- ("OR" AndExpr)* {
-        var out []*astv1.Expr
-
-        for _, v := range $1 {
-            pair := v.([]any)
-            expr := pair[1].(*astv1.Expr)
-            out = append(out, expr)
-        }
-
-        return out, nil
+    <- tail:(WS "OR" WS AndExpr)* {
+        return buildOrTail(tail)
     }
 
 AndExpr
     <- head:Unary tail:AndTail {
-        return buildAnd(head, tail), nil
+        return buildAnd(head, tail)
     }
 
 AndTail
-    <- ("AND" Unary)* {
-        var out []*astv1.Expr
-
-        for _, v := range $1 {
-            pair := v.([]any)
-            expr := pair[1].(*astv1.Expr)
-            out = append(out, expr)
-        }
-
-        return out, nil
+    <- tail:(WS "AND" WS Unary)* {
+        return buildAndTail(tail)
     }
 
 Unary
-    <- "NOT" x:Unary {
-        return &astv1.Expr{
-            Condition: &astv1.Expr_Not{
-                Not: &astv1.NotExpr{
-                    Conditions: x,
-                },
-            },
-        }, nil
+    <- "NOT" WS x:Unary {
+        return buildNot(x)
     }
     / Primary
 
 Primary
-    <- "(" Expr ")"
+    <- "(" WS expr:Expr WS ")" {
+        return expr, nil
+    }
     / Has
+    / Contains
+    / In
     / Comparison
 
+Contains
+    <- "contains" WS "(" WS field:(Ident / String) WS "," WS value:Value WS ")" {
+        return buildContains(field, value)
+    }
+
+In
+    <- "in" WS "(" WS field:(Ident / String) WS "," WS values:List WS ")" {
+        return buildIn(field, values)
+    }
+
+CommaValue
+    <- WS "," WS v:Value {
+        return v, nil
+    }
+
+List
+    <- "[" WS first:Value rest:CommaValue* WS "]" {
+        return buildList(first, rest)
+    }
+
 Has
-    <- "has" "(" entity:Ident "," expr:Expr ")" {
-        return &astv1.Expr{
-            Condition: &astv1.Expr_Has{
-                Has: &astv1.HasChildren{
-                    Entity: entity,
-                    With:   expr,
-                },
-            },
-        }, nil
+    <- "has" WS "(" WS entity:Ident WS "," WS expr:Expr WS ")" {
+        return buildHas(entity, expr)
     }
 
 Comparison
-    <- field:Ident op:Op value:Value {
-        return buildComparison(field, op, value), nil
+    <- field:Ident WS op:Op WS value:Value {
+        return buildComparison(field, op, value)
     }
 
 Op
-    <- ">=" / "<=" / "!=" / ">" / "<" / "="
+    <- (">=" / "<=" / "!=" / ">" / "<" / "=") {
+        return string(c.text), nil
+    }
+    / ("" { return "", nil })
 
 Value
-    <- Bool / Number / String
+    <- v:(Bool / Number / String) {
+        return v, nil
+    }
 
 Bool
     <- "true" {
@@ -95,17 +95,33 @@ Bool
     }
 
 Number
-    <- [0-9]+ {
-        v, _ := strconv.ParseInt(text, 10, 64)
+    <- val:[0-9]+ {
+        s, err := toString(val)
+        if err != nil {
+            return nil, err
+        }
+        v, _ := strconv.ParseInt(s, 10, 64)
         return &astv1.Value{
             Value: &astv1.Value_Integer{Integer: v},
         }, nil
     }
 
-Ident       <- [a-zA-Z_][a-zA-Z0-9_]*
+Ident       <- [a-zA-Z_][a-zA-Z0-9_]* {
+        return string(c.text), nil
+    }
 
-Number      <- [0-9]+
-
-String      <- '"' StringChar* '"' / "'" StringChar* "'"
+String      <- ( '"' StringChar* '"' / "'" StringChar* "'" ) {
+        s := string(c.text)
+        if len(s) >= 2 {
+            s = s[1 : len(s)-1]
+        }
+        return &astv1.Value{
+            Value: &astv1.Value_String_{String_: s},
+        }, nil
+    }
 
 StringChar  <- !["'] .
+
+WS          <- [ \t\n\r]* {
+        return nil, nil
+    }

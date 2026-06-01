@@ -21,15 +21,17 @@ func (cn *ComparisonNode) GetField() string {
 }
 
 func (cn *ComparisonNode) GetOperator() string {
-	f, ok := cn.Field.(string)
+	f, ok := cn.Op.(string)
 	if !ok {
-		panic("ComparisonNode \"operator\" no a string")
+		panic("ComparisonNode \"operator\" not a string")
 	}
 	return f
 }
 
 func (cn *ComparisonNode) GetValue() (*astv1.Value, error) {
 	switch v := cn.Value.(type) {
+	case *astv1.Value:
+		return v, nil
 	case bool:
 		return &astv1.Value{
 			Value: &astv1.Value_Bool{
@@ -54,6 +56,14 @@ func (cn *ComparisonNode) Expr() (*astv1.Expr, error) {
 		op = "eq"
 	case "!=", "neq", "not_equal":
 		op = "neq"
+	case ">=", "gte":
+		op = "gte"
+	case "<=", "lte":
+		op = "lte"
+	case ">", "gt":
+		op = "gt"
+	case "<", "lt":
+		op = "lt"
 	}
 	val, err := cn.GetValue()
 	return &astv1.Expr{
