@@ -1,0 +1,111 @@
+{
+    package roqql
+
+    import (
+        "strconv"
+        astv1 "github.com/roderm/filtrify/pkg/generated/filtrify/ast/v1"
+    )
+}
+
+Expr
+    <- OrExpr
+
+OrExpr
+    <- head:AndExpr tail:OrTail {
+        return buildOr(head, tail), nil
+    }
+
+OrTail
+    <- ("OR" AndExpr)* {
+        var out []*astv1.Expr
+
+        for _, v := range $1 {
+            pair := v.([]any)
+            expr := pair[1].(*astv1.Expr)
+            out = append(out, expr)
+        }
+
+        return out, nil
+    }
+
+AndExpr
+    <- head:Unary tail:AndTail {
+        return buildAnd(head, tail), nil
+    }
+
+AndTail
+    <- ("AND" Unary)* {
+        var out []*astv1.Expr
+
+        for _, v := range $1 {
+            pair := v.([]any)
+            expr := pair[1].(*astv1.Expr)
+            out = append(out, expr)
+        }
+
+        return out, nil
+    }
+
+Unary
+    <- "NOT" x:Unary {
+        return &astv1.Expr{
+            Condition: &astv1.Expr_Not{
+                Not: &astv1.NotExpr{
+                    Conditions: x,
+                },
+            },
+        }, nil
+    }
+    / Primary
+
+Primary
+    <- "(" Expr ")"
+    / Has
+    / Comparison
+
+Has
+    <- "has" "(" entity:Ident "," expr:Expr ")" {
+        return &astv1.Expr{
+            Condition: &astv1.Expr_Has{
+                Has: &astv1.HasChildren{
+                    Entity: entity,
+                    With:   expr,
+                },
+            },
+        }, nil
+    }
+
+Comparison
+    <- field:Ident op:Op value:Value {
+        return buildComparison(field, op, value), nil
+    }
+
+Op
+    <- ">=" / "<=" / "!=" / ">" / "<" / "="
+
+Value
+    <- Bool / Number / String
+
+Bool
+    <- "true" {
+        return &astv1.Value{Value: &astv1.Value_Bool{Bool: true}}, nil
+    }
+    / "false" {
+        return &astv1.Value{Value: &astv1.Value_Bool{Bool: false}}, nil
+    }
+
+Number
+    <- [0-9]+ {
+        v, _ := strconv.ParseInt(text, 10, 64)
+        return &astv1.Value{
+            Value: &astv1.Value_Integer{Integer: v},
+        }, nil
+    }
+
+Ident       <- [a-zA-Z_][a-zA-Z0-9_]*
+
+Number      <- [0-9]+
+
+String      <- '"' StringChar* '"' / "'" StringChar* "'"
+
+StringChar  <- !["'] .
