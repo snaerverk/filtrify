@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package filtrify.search.v1;
+
+import "filtrify/ast/v1/ast.proto";
+
+service SearchService {
+  rpc Parse(GetRequest) returns (filtrify.ast.v1.Expr);
+  // rpc GetIDs(GetRequest) returns (stream IDResponse);
+  // rpc GetData(GetRequest) returns (stream IDResponse);
+}
+
+message GetRequest {
+  string entity = 1;
+  string term = 2;
+
+  // order....
+  // paging...
+}
+
+// message IDResponse {
+//   string id = 1;
+//   string cursor = 2;
+// }
+
+// message DataResponse {
+//   string id = 1;
+//   string cursor = 2;
+//   // map<string,google.>
+// }

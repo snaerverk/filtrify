@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package filtrify.ast.v1;
+
+import "filtrify/ast/v1/ast.proto";
+
+service ParseService {
+  rpc Parse(ParseRequest) returns (filtrify.ast.v1.Expr);
+}
+
+message ParseRequest {
+  string term = 1;
+}
