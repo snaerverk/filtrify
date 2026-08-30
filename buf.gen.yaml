@@ -3,7 +3,7 @@ managed:
   enabled: true
   override:
     - file_option: go_package_prefix
-      value: github.com/roderm/filtrify/pkg/generated
+      value: github.com/snaerverk/filtrify/pkg/generated
 plugins:
   - remote: buf.build/protocolbuffers/go
     out: pkg/generated/
