@@ -1,4 +1,4 @@
-module github.com/roderm/filtrify
+module github.com/snaerverk/filtrify
 
 go 1.27
 

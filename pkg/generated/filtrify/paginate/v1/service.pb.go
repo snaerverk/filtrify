@@ -7,7 +7,7 @@
 package paginatev1
 
 import (
-	v1 "github.com/roderm/filtrify/pkg/generated/filtrify/ast/v1"
+	v1 "github.com/snaerverk/filtrify/pkg/generated/filtrify/ast/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	anypb "google.golang.org/protobuf/types/known/anypb"
@@ -273,8 +273,8 @@ const file_filtrify_paginate_v1_service_proto_rawDesc = "" +
 	"\x03ASC\x10\x00\x12\b\n" +
 	"\x04DESC\x10\x012R\n" +
 	"\x0fPaginateService\x12?\n" +
-	"\x03Get\x12 .filtrify.paginate.v1.GetRequest\x1a\x14.google.protobuf.Any0\x01B\xe4\x01\n" +
-	"\x18com.filtrify.paginate.v1B\fServiceProtoP\x01ZHgithub.com/roderm/filtrify/pkg/generated/filtrify/paginate/v1;paginatev1\xa2\x02\x03FPX\xaa\x02\x14Filtrify.Paginate.V1\xca\x02\x14Filtrify\\Paginate\\V1\xe2\x02 Filtrify\\Paginate\\V1\\GPBMetadata\xea\x02\x16Filtrify::Paginate::V1b\x06proto3"
+	"\x03Get\x12 .filtrify.paginate.v1.GetRequest\x1a\x14.google.protobuf.Any0\x01B\xe7\x01\n" +
+	"\x18com.filtrify.paginate.v1B\fServiceProtoP\x01ZKgithub.com/snaerverk/filtrify/pkg/generated/filtrify/paginate/v1;paginatev1\xa2\x02\x03FPX\xaa\x02\x14Filtrify.Paginate.V1\xca\x02\x14Filtrify\\Paginate\\V1\xe2\x02 Filtrify\\Paginate\\V1\\GPBMetadata\xea\x02\x16Filtrify::Paginate::V1b\x06proto3"
 
 var (
 	file_filtrify_paginate_v1_service_proto_rawDescOnce sync.Once

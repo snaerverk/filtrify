@@ -7,7 +7,7 @@
 package searchv1
 
 import (
-	v1 "github.com/roderm/filtrify/pkg/generated/filtrify/ast/v1"
+	v1 "github.com/snaerverk/filtrify/pkg/generated/filtrify/ast/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +84,8 @@ const file_filtrify_search_v1_service_proto_rawDesc = "" +
 	"\x06entity\x18\x01 \x01(\tR\x06entity\x12\x12\n" +
 	"\x04term\x18\x02 \x01(\tR\x04term2O\n" +
 	"\rSearchService\x12>\n" +
-	"\x05Parse\x12\x1e.filtrify.search.v1.GetRequest\x1a\x15.filtrify.ast.v1.ExprB\xd6\x01\n" +
-	"\x16com.filtrify.search.v1B\fServiceProtoP\x01ZDgithub.com/roderm/filtrify/pkg/generated/filtrify/search/v1;searchv1\xa2\x02\x03FSX\xaa\x02\x12Filtrify.Search.V1\xca\x02\x12Filtrify\\Search\\V1\xe2\x02\x1eFiltrify\\Search\\V1\\GPBMetadata\xea\x02\x14Filtrify::Search::V1b\x06proto3"
+	"\x05Parse\x12\x1e.filtrify.search.v1.GetRequest\x1a\x15.filtrify.ast.v1.ExprB\xd9\x01\n" +
+	"\x16com.filtrify.search.v1B\fServiceProtoP\x01ZGgithub.com/snaerverk/filtrify/pkg/generated/filtrify/search/v1;searchv1\xa2\x02\x03FSX\xaa\x02\x12Filtrify.Search.V1\xca\x02\x12Filtrify\\Search\\V1\xe2\x02\x1eFiltrify\\Search\\V1\\GPBMetadata\xea\x02\x14Filtrify::Search::V1b\x06proto3"
 
 var (
 	file_filtrify_search_v1_service_proto_rawDescOnce sync.Once

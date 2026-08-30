@@ -147,7 +147,7 @@ const file_entity_svc_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\v2 .google.protobuf.DescriptorProtoR\x05value:\x028\x012^\n" +
 	"\x06Entity\x12(\n" +
 	"\aGetInfo\x12\x16.google.protobuf.Empty\x1a\x05.Info\x12*\n" +
-	"\x03Get\x12\v.GetRequest\x1a\x14.google.protobuf.Any0\x01B=B\bSvcProtoP\x01Z/github.com/roderm/filtrify/pkg/generated/entityb\x06proto3"
+	"\x03Get\x12\v.GetRequest\x1a\x14.google.protobuf.Any0\x01B@B\bSvcProtoP\x01Z2github.com/snaerverk/filtrify/pkg/generated/entityb\x06proto3"
 
 var (
 	file_entity_svc_proto_rawDescOnce sync.Once

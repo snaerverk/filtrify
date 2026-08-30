@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	astv1 "github.com/roderm/filtrify/pkg/generated/filtrify/ast/v1"
+	astv1 "github.com/snaerverkerk/filtrify/pkg/generated/filtrify/ast/v1"
 )
 
 func toString(v any) (string, error) {

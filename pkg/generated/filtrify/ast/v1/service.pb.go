@@ -73,8 +73,8 @@ const file_filtrify_ast_v1_service_proto_rawDesc = "" +
 	"\fParseRequest\x12\x12\n" +
 	"\x04term\x18\x01 \x01(\tR\x04term2M\n" +
 	"\fParseService\x12=\n" +
-	"\x05Parse\x12\x1d.filtrify.ast.v1.ParseRequest\x1a\x15.filtrify.ast.v1.ExprB\xc1\x01\n" +
-	"\x13com.filtrify.ast.v1B\fServiceProtoP\x01Z>github.com/roderm/filtrify/pkg/generated/filtrify/ast/v1;astv1\xa2\x02\x03FAX\xaa\x02\x0fFiltrify.Ast.V1\xca\x02\x0fFiltrify\\Ast\\V1\xe2\x02\x1bFiltrify\\Ast\\V1\\GPBMetadata\xea\x02\x11Filtrify::Ast::V1b\x06proto3"
+	"\x05Parse\x12\x1d.filtrify.ast.v1.ParseRequest\x1a\x15.filtrify.ast.v1.ExprB\xc4\x01\n" +
+	"\x13com.filtrify.ast.v1B\fServiceProtoP\x01ZAgithub.com/snaerverk/filtrify/pkg/generated/filtrify/ast/v1;astv1\xa2\x02\x03FAX\xaa\x02\x0fFiltrify.Ast.V1\xca\x02\x0fFiltrify\\Ast\\V1\xe2\x02\x1bFiltrify\\Ast\\V1\\GPBMetadata\xea\x02\x11Filtrify::Ast::V1b\x06proto3"
 
 var (
 	file_filtrify_ast_v1_service_proto_rawDescOnce sync.Once

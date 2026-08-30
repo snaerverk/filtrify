@@ -8,7 +8,7 @@ package searchv1
 
 import (
 	context "context"
-	v1 "github.com/roderm/filtrify/pkg/generated/filtrify/ast/v1"
+	v1 "github.com/snaerverk/filtrify/pkg/generated/filtrify/ast/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"

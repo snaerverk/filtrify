@@ -656,8 +656,8 @@ const file_filtrify_ast_v1_ast_proto_rawDesc = "" +
 	"\aNotExpr\x125\n" +
 	"\n" +
 	"conditions\x18\x01 \x01(\v2\x15.filtrify.ast.v1.ExprR\n" +
-	"conditionsB\xbd\x01\n" +
-	"\x13com.filtrify.ast.v1B\bAstProtoP\x01Z>github.com/roderm/filtrify/pkg/generated/filtrify/ast/v1;astv1\xa2\x02\x03FAX\xaa\x02\x0fFiltrify.Ast.V1\xca\x02\x0fFiltrify\\Ast\\V1\xe2\x02\x1bFiltrify\\Ast\\V1\\GPBMetadata\xea\x02\x11Filtrify::Ast::V1b\x06proto3"
+	"conditionsB\xc0\x01\n" +
+	"\x13com.filtrify.ast.v1B\bAstProtoP\x01ZAgithub.com/snaerverk/filtrify/pkg/generated/filtrify/ast/v1;astv1\xa2\x02\x03FAX\xaa\x02\x0fFiltrify.Ast.V1\xca\x02\x0fFiltrify\\Ast\\V1\xe2\x02\x1bFiltrify\\Ast\\V1\\GPBMetadata\xea\x02\x11Filtrify::Ast::V1b\x06proto3"
 
 var (
 	file_filtrify_ast_v1_ast_proto_rawDescOnce sync.Once

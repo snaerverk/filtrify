@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	astv1 "github.com/roderm/filtrify/pkg/generated/filtrify/ast/v1"
+	astv1 "github.com/snaerverk/filtrify/pkg/generated/filtrify/ast/v1"
 )
 
 type Parser struct{}
