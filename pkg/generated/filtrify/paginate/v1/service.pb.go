@@ -27,19 +27,19 @@ const (
 type Direction int32
 
 const (
-	Direction_ASC  Direction = 0
-	Direction_DESC Direction = 1
+	Direction_DIRECTION_ASC  Direction = 0
+	Direction_DIRECTION_DESC Direction = 1
 )
 
 // Enum value maps for Direction.
 var (
 	Direction_name = map[int32]string{
-		0: "ASC",
-		1: "DESC",
+		0: "DIRECTION_ASC",
+		1: "DIRECTION_DESC",
 	}
 	Direction_value = map[string]int32{
-		"ASC":  0,
-		"DESC": 1,
+		"DIRECTION_ASC":  0,
+		"DIRECTION_DESC": 1,
 	}
 )
 
@@ -119,7 +119,7 @@ func (x *OrderField) GetDirection() Direction {
 	if x != nil {
 		return x.Direction
 	}
-	return Direction_ASC
+	return Direction_DIRECTION_ASC
 }
 
 type Paging struct {
@@ -268,10 +268,10 @@ const file_filtrify_paginate_v1_service_proto_rawDesc = "" +
 	"\tfieldmask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\tfieldmask\x12-\n" +
 	"\x06search\x18\x05 \x01(\v2\x15.filtrify.ast.v1.ExprR\x06search\x126\n" +
 	"\x05order\x18\x06 \x03(\v2 .filtrify.paginate.v1.OrderFieldR\x05order\x124\n" +
-	"\x06paging\x18\a \x01(\v2\x1c.filtrify.paginate.v1.PagingR\x06paging*\x1e\n" +
-	"\tDirection\x12\a\n" +
-	"\x03ASC\x10\x00\x12\b\n" +
-	"\x04DESC\x10\x012R\n" +
+	"\x06paging\x18\a \x01(\v2\x1c.filtrify.paginate.v1.PagingR\x06paging*2\n" +
+	"\tDirection\x12\x11\n" +
+	"\rDIRECTION_ASC\x10\x00\x12\x12\n" +
+	"\x0eDIRECTION_DESC\x10\x012R\n" +
 	"\x0fPaginateService\x12?\n" +
 	"\x03Get\x12 .filtrify.paginate.v1.GetRequest\x1a\x14.google.protobuf.Any0\x01B\xe7\x01\n" +
 	"\x18com.filtrify.paginate.v1B\fServiceProtoP\x01ZKgithub.com/snaerverk/filtrify/pkg/generated/filtrify/paginate/v1;paginatev1\xa2\x02\x03FPX\xaa\x02\x14Filtrify.Paginate.V1\xca\x02\x14Filtrify\\Paginate\\V1\xe2\x02 Filtrify\\Paginate\\V1\\GPBMetadata\xea\x02\x16Filtrify::Paginate::V1b\x06proto3"

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: entity/svc.proto
+// source: test/entity/svc.proto
 
 package entity
 
@@ -36,7 +36,7 @@ type GetRequest struct {
 
 func (x *GetRequest) Reset() {
 	*x = GetRequest{}
-	mi := &file_entity_svc_proto_msgTypes[0]
+	mi := &file_test_entity_svc_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -48,7 +48,7 @@ func (x *GetRequest) String() string {
 func (*GetRequest) ProtoMessage() {}
 
 func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_svc_proto_msgTypes[0]
+	mi := &file_test_entity_svc_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -61,7 +61,7 @@ func (x *GetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
 func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_entity_svc_proto_rawDescGZIP(), []int{0}
+	return file_test_entity_svc_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GetRequest) GetEntity() string {
@@ -94,7 +94,7 @@ type Info struct {
 
 func (x *Info) Reset() {
 	*x = Info{}
-	mi := &file_entity_svc_proto_msgTypes[1]
+	mi := &file_test_entity_svc_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -106,7 +106,7 @@ func (x *Info) String() string {
 func (*Info) ProtoMessage() {}
 
 func (x *Info) ProtoReflect() protoreflect.Message {
-	mi := &file_entity_svc_proto_msgTypes[1]
+	mi := &file_test_entity_svc_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -119,7 +119,7 @@ func (x *Info) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Info.ProtoReflect.Descriptor instead.
 func (*Info) Descriptor() ([]byte, []int) {
-	return file_entity_svc_proto_rawDescGZIP(), []int{1}
+	return file_test_entity_svc_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Info) GetEntities() map[string]*descriptorpb.DescriptorProto {
@@ -129,56 +129,57 @@ func (x *Info) GetEntities() map[string]*descriptorpb.DescriptorProto {
 	return nil
 }
 
-var File_entity_svc_proto protoreflect.FileDescriptor
+var File_test_entity_svc_proto protoreflect.FileDescriptor
 
-const file_entity_svc_proto_rawDesc = "" +
+const file_test_entity_svc_proto_rawDesc = "" +
 	"\n" +
-	"\x10entity/svc.proto\x1a\x19google/protobuf/any.proto\x1a google/protobuf/descriptor.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\"o\n" +
+	"\x15test/entity/svc.proto\x12\vtest.entity\x1a\x19google/protobuf/any.proto\x1a google/protobuf/descriptor.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\"o\n" +
 	"\n" +
 	"GetRequest\x12\x16\n" +
 	"\x06entity\x18\x01 \x01(\tR\x06entity\x12\x0e\n" +
 	"\x02id\x18\x02 \x03(\tR\x02id\x129\n" +
 	"\n" +
-	"field_mask\x18\x03 \x01(\v2\x1a.google.protobuf.FieldMaskR\tfieldMask\"\x96\x01\n" +
-	"\x04Info\x12/\n" +
-	"\bentities\x18\x01 \x03(\v2\x13.Info.EntitiesEntryR\bentities\x1a]\n" +
+	"field_mask\x18\x03 \x01(\v2\x1a.google.protobuf.FieldMaskR\tfieldMask\"\xa2\x01\n" +
+	"\x04Info\x12;\n" +
+	"\bentities\x18\x01 \x03(\v2\x1f.test.entity.Info.EntitiesEntryR\bentities\x1a]\n" +
 	"\rEntitiesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x126\n" +
-	"\x05value\x18\x02 \x01(\v2 .google.protobuf.DescriptorProtoR\x05value:\x028\x012^\n" +
-	"\x06Entity\x12(\n" +
-	"\aGetInfo\x12\x16.google.protobuf.Empty\x1a\x05.Info\x12*\n" +
-	"\x03Get\x12\v.GetRequest\x1a\x14.google.protobuf.Any0\x01B@B\bSvcProtoP\x01Z2github.com/snaerverk/filtrify/pkg/generated/entityb\x06proto3"
+	"\x05value\x18\x02 \x01(\v2 .google.protobuf.DescriptorProtoR\x05value:\x028\x012v\n" +
+	"\x06Entity\x124\n" +
+	"\aGetInfo\x12\x16.google.protobuf.Empty\x1a\x11.test.entity.Info\x126\n" +
+	"\x03Get\x12\x17.test.entity.GetRequest\x1a\x14.google.protobuf.Any0\x01B\xa1\x01\n" +
+	"\x0fcom.test.entityB\bSvcProtoP\x01Z7github.com/snaerverk/filtrify/pkg/generated/test/entity\xa2\x02\x03TEX\xaa\x02\vTest.Entity\xca\x02\vTest\\Entity\xe2\x02\x17Test\\Entity\\GPBMetadata\xea\x02\fTest::Entityb\x06proto3"
 
 var (
-	file_entity_svc_proto_rawDescOnce sync.Once
-	file_entity_svc_proto_rawDescData []byte
+	file_test_entity_svc_proto_rawDescOnce sync.Once
+	file_test_entity_svc_proto_rawDescData []byte
 )
 
-func file_entity_svc_proto_rawDescGZIP() []byte {
-	file_entity_svc_proto_rawDescOnce.Do(func() {
-		file_entity_svc_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_entity_svc_proto_rawDesc), len(file_entity_svc_proto_rawDesc)))
+func file_test_entity_svc_proto_rawDescGZIP() []byte {
+	file_test_entity_svc_proto_rawDescOnce.Do(func() {
+		file_test_entity_svc_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_test_entity_svc_proto_rawDesc), len(file_test_entity_svc_proto_rawDesc)))
 	})
-	return file_entity_svc_proto_rawDescData
+	return file_test_entity_svc_proto_rawDescData
 }
 
-var file_entity_svc_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_entity_svc_proto_goTypes = []any{
-	(*GetRequest)(nil),                   // 0: GetRequest
-	(*Info)(nil),                         // 1: Info
-	nil,                                  // 2: Info.EntitiesEntry
+var file_test_entity_svc_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_test_entity_svc_proto_goTypes = []any{
+	(*GetRequest)(nil),                   // 0: test.entity.GetRequest
+	(*Info)(nil),                         // 1: test.entity.Info
+	nil,                                  // 2: test.entity.Info.EntitiesEntry
 	(*fieldmaskpb.FieldMask)(nil),        // 3: google.protobuf.FieldMask
 	(*descriptorpb.DescriptorProto)(nil), // 4: google.protobuf.DescriptorProto
 	(*emptypb.Empty)(nil),                // 5: google.protobuf.Empty
 	(*anypb.Any)(nil),                    // 6: google.protobuf.Any
 }
-var file_entity_svc_proto_depIdxs = []int32{
-	3, // 0: GetRequest.field_mask:type_name -> google.protobuf.FieldMask
-	2, // 1: Info.entities:type_name -> Info.EntitiesEntry
-	4, // 2: Info.EntitiesEntry.value:type_name -> google.protobuf.DescriptorProto
-	5, // 3: Entity.GetInfo:input_type -> google.protobuf.Empty
-	0, // 4: Entity.Get:input_type -> GetRequest
-	1, // 5: Entity.GetInfo:output_type -> Info
-	6, // 6: Entity.Get:output_type -> google.protobuf.Any
+var file_test_entity_svc_proto_depIdxs = []int32{
+	3, // 0: test.entity.GetRequest.field_mask:type_name -> google.protobuf.FieldMask
+	2, // 1: test.entity.Info.entities:type_name -> test.entity.Info.EntitiesEntry
+	4, // 2: test.entity.Info.EntitiesEntry.value:type_name -> google.protobuf.DescriptorProto
+	5, // 3: test.entity.Entity.GetInfo:input_type -> google.protobuf.Empty
+	0, // 4: test.entity.Entity.Get:input_type -> test.entity.GetRequest
+	1, // 5: test.entity.Entity.GetInfo:output_type -> test.entity.Info
+	6, // 6: test.entity.Entity.Get:output_type -> google.protobuf.Any
 	5, // [5:7] is the sub-list for method output_type
 	3, // [3:5] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -186,26 +187,26 @@ var file_entity_svc_proto_depIdxs = []int32{
 	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_entity_svc_proto_init() }
-func file_entity_svc_proto_init() {
-	if File_entity_svc_proto != nil {
+func init() { file_test_entity_svc_proto_init() }
+func file_test_entity_svc_proto_init() {
+	if File_test_entity_svc_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_entity_svc_proto_rawDesc), len(file_entity_svc_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_test_entity_svc_proto_rawDesc), len(file_test_entity_svc_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_entity_svc_proto_goTypes,
-		DependencyIndexes: file_entity_svc_proto_depIdxs,
-		MessageInfos:      file_entity_svc_proto_msgTypes,
+		GoTypes:           file_test_entity_svc_proto_goTypes,
+		DependencyIndexes: file_test_entity_svc_proto_depIdxs,
+		MessageInfos:      file_test_entity_svc_proto_msgTypes,
 	}.Build()
-	File_entity_svc_proto = out.File
-	file_entity_svc_proto_goTypes = nil
-	file_entity_svc_proto_depIdxs = nil
+	File_test_entity_svc_proto = out.File
+	file_test_entity_svc_proto_goTypes = nil
+	file_test_entity_svc_proto_depIdxs = nil
 }
