@@ -2,6 +2,7 @@ package roqql
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	astv1 "github.com/snaerverk/filtrify/pkg/generated/filtrify/ast/v1"
@@ -245,4 +246,38 @@ func buildNot(x any) (*astv1.Expr, error) {
 			},
 		},
 	}, nil
+}
+
+// buildNumber reads an integer, or a float if it has a fraction. Out of range
+// values are an error rather than a clamped value.
+func buildNumber(text string) (*astv1.Value, error) {
+	if strings.Contains(text, ".") {
+		f, err := strconv.ParseFloat(text, 64)
+		if err != nil {
+			return nil, fmt.Errorf("number %q: %w", text, err)
+		}
+		return &astv1.Value{Value: &astv1.Value_Float{Float: f}}, nil
+	}
+	i, err := strconv.ParseInt(text, 10, 64)
+	if err != nil {
+		return nil, fmt.Errorf("number %q: %w", text, err)
+	}
+	return &astv1.Value{Value: &astv1.Value_Integer{Integer: i}}, nil
+}
+
+// buildString strips the quotes of a string literal and resolves its escapes,
+// which the grammar limits to a backslash before a quote or backslash.
+func buildString(text string) (*astv1.Value, error) {
+	if len(text) < 2 {
+		return nil, fmt.Errorf("string literal %q too short", text)
+	}
+	inner := text[1 : len(text)-1]
+	var b strings.Builder
+	for i := 0; i < len(inner); i++ {
+		if inner[i] == '\\' && i+1 < len(inner) {
+			i++
+		}
+		b.WriteByte(inner[i])
+	}
+	return &astv1.Value{Value: &astv1.Value_String_{String_: b.String()}}, nil
 }

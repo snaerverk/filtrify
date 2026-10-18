@@ -2,10 +2,16 @@
     package roqql
 
     import (
-        "strconv"
         astv1 "github.com/snaerverk/filtrify/pkg/generated/filtrify/ast/v1"
     )
 }
+
+// Query is the entry point. It must consume the whole input: a filter that
+// silently stopped at the first unparsable token would match more than asked.
+Query
+    <- WS expr:Expr WS EOF {
+        return expr, nil
+    }
 
 Expr
     <- OrExpr
@@ -16,7 +22,7 @@ OrExpr
     }
 
 OrTail
-    <- tail:(WS "OR" WS AndExpr)* {
+    <- tail:(WS OrKw WS AndExpr)* {
         return buildOrTail(tail)
     }
 
@@ -26,12 +32,12 @@ AndExpr
     }
 
 AndTail
-    <- tail:(WS "AND" WS Unary)* {
+    <- tail:(WS AndKw WS Unary)* {
         return buildAndTail(tail)
     }
 
 Unary
-    <- "NOT" WS x:Unary {
+    <- NotKw WS x:Unary {
         return buildNot(x)
     }
     / Primary
@@ -46,12 +52,12 @@ Primary
     / Comparison
 
 Contains
-    <- "contains" WS "(" WS field:(Ident / String) WS "," WS value:Value WS ")" {
+    <- "contains"i WS "(" WS field:(Ident / String) WS "," WS value:Value WS ")" {
         return buildContains(field, value)
     }
 
 In
-    <- "in" WS "(" WS field:(Ident / String) WS "," WS values:List WS ")" {
+    <- "in"i WS "(" WS field:(Ident / String) WS "," WS values:List WS ")" {
         return buildIn(field, values)
     }
 
@@ -66,10 +72,11 @@ List
     }
 
 Has
-    <- "has" WS "(" WS entity:Ident WS "," WS expr:Expr WS ")" {
+    <- "has"i WS "(" WS entity:Ident WS "," WS expr:Expr WS ")" {
         return buildHas(entity, expr)
     }
 
+// The operator is required: "field value" is a syntax error, not equality.
 Comparison
     <- field:Ident WS op:Op WS value:Value {
         return buildComparison(field, op, value)
@@ -79,7 +86,6 @@ Op
     <- (">=" / "<=" / "!=" / ">" / "<" / "=") {
         return string(c.text), nil
     }
-    / ("" { return "", nil })
 
 Value
     <- v:(Bool / Number / String) {
@@ -87,41 +93,40 @@ Value
     }
 
 Bool
-    <- "true" {
+    <- "true"i !IdentChar {
         return &astv1.Value{Value: &astv1.Value_Bool{Bool: true}}, nil
     }
-    / "false" {
+    / "false"i !IdentChar {
         return &astv1.Value{Value: &astv1.Value_Bool{Bool: false}}, nil
     }
 
 Number
-    <- val:[0-9]+ {
-        s, err := toString(val)
-        if err != nil {
-            return nil, err
-        }
-        v, _ := strconv.ParseInt(s, 10, 64)
-        return &astv1.Value{
-            Value: &astv1.Value_Integer{Integer: v},
-        }, nil
+    <- '-'? [0-9]+ ('.' [0-9]+)? !IdentChar {
+        return buildNumber(string(c.text))
     }
 
-Ident       <- [a-zA-Z_][a-zA-Z0-9_]* {
+// Keywords are case-insensitive and must not run into an identifier, so
+// "notes = 1" is a comparison on "notes", not NOT "es = 1".
+AndKw <- "and"i !IdentChar
+OrKw  <- "or"i !IdentChar
+NotKw <- "not"i !IdentChar
+
+Ident       <- [a-zA-Z_] IdentChar* {
         return string(c.text), nil
     }
 
-String      <- ( '"' StringChar* '"' / "'" StringChar* "'" ) {
-        s := string(c.text)
-        if len(s) >= 2 {
-            s = s[1 : len(s)-1]
-        }
-        return &astv1.Value{
-            Value: &astv1.Value_String_{String_: s},
-        }, nil
+IdentChar   <- [a-zA-Z0-9_]
+
+// Strings take either quote; a backslash escapes the next quote or backslash.
+String      <- ( '"' DQChar* '"' / "'" SQChar* "'" ) {
+        return buildString(string(c.text))
     }
 
-StringChar  <- !["'] .
+DQChar      <- '\\' ["'\\] / !["\\] .
+SQChar      <- '\\' ["'\\] / !['\\] .
 
 WS          <- [ \t\n\r]* {
         return nil, nil
     }
+
+EOF         <- !.

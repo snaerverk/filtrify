@@ -324,7 +324,7 @@ func (x *Value) GetInteger() int64 {
 	return 0
 }
 
-func (x *Value) GetFloat() float32 {
+func (x *Value) GetFloat() float64 {
 	if x != nil {
 		if x, ok := x.Value.(*Value_Float); ok {
 			return x.Float
@@ -364,7 +364,7 @@ type Value_Integer struct {
 }
 
 type Value_Float struct {
-	Float float32 `protobuf:"fixed32,3,opt,name=float,proto3,oneof"`
+	Float float64 `protobuf:"fixed64,3,opt,name=float,proto3,oneof"`
 }
 
 type Value_String_ struct {
@@ -635,7 +635,7 @@ const file_filtrify_ast_v1_ast_proto_rawDesc = "" +
 	"\x05Value\x12\x14\n" +
 	"\x04bool\x18\x01 \x01(\bH\x00R\x04bool\x12\x1a\n" +
 	"\ainteger\x18\x02 \x01(\x03H\x00R\ainteger\x12\x16\n" +
-	"\x05float\x18\x03 \x01(\x02H\x00R\x05float\x12\x18\n" +
+	"\x05float\x18\x03 \x01(\x01H\x00R\x05float\x12\x18\n" +
 	"\x06string\x18\x04 \x01(\tH\x00R\x06string\x12+\n" +
 	"\x04list\x18\x05 \x01(\v2\x15.filtrify.ast.v1.ListH\x00R\x04listB\a\n" +
 	"\x05value\"P\n" +
