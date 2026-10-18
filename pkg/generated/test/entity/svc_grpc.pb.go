@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.2
 // - protoc             (unknown)
-// source: entity/svc.proto
+// source: test/entity/svc.proto
 
 package entity
 
@@ -21,8 +21,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Entity_GetInfo_FullMethodName = "/Entity/GetInfo"
-	Entity_Get_FullMethodName     = "/Entity/Get"
+	Entity_GetInfo_FullMethodName = "/test.entity.Entity/GetInfo"
+	Entity_Get_FullMethodName     = "/test.entity.Entity/Get"
 )
 
 // EntityClient is the client API for Entity service.
@@ -146,7 +146,7 @@ type Entity_GetServer = grpc.ServerStreamingServer[anypb.Any]
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Entity_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "Entity",
+	ServiceName: "test.entity.Entity",
 	HandlerType: (*EntityServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -161,5 +161,5 @@ var Entity_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "entity/svc.proto",
+	Metadata: "test/entity/svc.proto",
 }

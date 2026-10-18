@@ -1,0 +1,30 @@
+name: buf
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write # buf-action posts a summary comment on PRs
+
+jobs:
+  buf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # breaking check compares against the base branch
+      - uses: bufbuild/buf-action@v1
+        with:
+          # build, lint, format and (on PRs) breaking run by default
+          push: false
+
+      - name: Check generated code is up to date
+        run: |
+          buf generate
+          git diff --exit-code -- pkg/generated || {
+            echo "::error::Generated code is out of date. Run 'buf generate' and commit the result."
+            exit 1
+          }

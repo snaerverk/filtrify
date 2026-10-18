@@ -12,8 +12,8 @@ service PaginateService {
 }
 
 enum Direction {
-  ASC = 0;
-  DESC = 1;
+  DIRECTION_ASC = 0;
+  DIRECTION_DESC = 1;
 }
 
 message OrderField {
