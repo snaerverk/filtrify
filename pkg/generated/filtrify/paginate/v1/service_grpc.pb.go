@@ -20,14 +20,16 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PaginateService_Get_FullMethodName = "/filtrify.paginate.v1.PaginateService/Get"
+	PaginateService_List_FullMethodName  = "/filtrify.paginate.v1.PaginateService/List"
+	PaginateService_Query_FullMethodName = "/filtrify.paginate.v1.PaginateService/Query"
 )
 
 // PaginateServiceClient is the client API for PaginateService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PaginateServiceClient interface {
-	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[anypb.Any], error)
+	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[anypb.Any], error)
+	Query(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*QueryResponse, error)
 }
 
 type paginateServiceClient struct {
@@ -38,13 +40,13 @@ func NewPaginateServiceClient(cc grpc.ClientConnInterface) PaginateServiceClient
 	return &paginateServiceClient{cc}
 }
 
-func (c *paginateServiceClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[anypb.Any], error) {
+func (c *paginateServiceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[anypb.Any], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &PaginateService_ServiceDesc.Streams[0], PaginateService_Get_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &PaginateService_ServiceDesc.Streams[0], PaginateService_List_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[GetRequest, anypb.Any]{ClientStream: stream}
+	x := &grpc.GenericClientStream[ListRequest, anypb.Any]{ClientStream: stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -55,13 +57,24 @@ func (c *paginateServiceClient) Get(ctx context.Context, in *GetRequest, opts ..
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type PaginateService_GetClient = grpc.ServerStreamingClient[anypb.Any]
+type PaginateService_ListClient = grpc.ServerStreamingClient[anypb.Any]
+
+func (c *paginateServiceClient) Query(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*QueryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QueryResponse)
+	err := c.cc.Invoke(ctx, PaginateService_Query_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
 // PaginateServiceServer is the server API for PaginateService service.
 // All implementations must embed UnimplementedPaginateServiceServer
 // for forward compatibility.
 type PaginateServiceServer interface {
-	Get(*GetRequest, grpc.ServerStreamingServer[anypb.Any]) error
+	List(*ListRequest, grpc.ServerStreamingServer[anypb.Any]) error
+	Query(context.Context, *QueryRequest) (*QueryResponse, error)
 	mustEmbedUnimplementedPaginateServiceServer()
 }
 
@@ -72,8 +85,11 @@ type PaginateServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedPaginateServiceServer struct{}
 
-func (UnimplementedPaginateServiceServer) Get(*GetRequest, grpc.ServerStreamingServer[anypb.Any]) error {
-	return status.Error(codes.Unimplemented, "method Get not implemented")
+func (UnimplementedPaginateServiceServer) List(*ListRequest, grpc.ServerStreamingServer[anypb.Any]) error {
+	return status.Error(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedPaginateServiceServer) Query(context.Context, *QueryRequest) (*QueryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Query not implemented")
 }
 func (UnimplementedPaginateServiceServer) mustEmbedUnimplementedPaginateServiceServer() {}
 func (UnimplementedPaginateServiceServer) testEmbeddedByValue()                         {}
@@ -96,16 +112,34 @@ func RegisterPaginateServiceServer(s grpc.ServiceRegistrar, srv PaginateServiceS
 	s.RegisterService(&PaginateService_ServiceDesc, srv)
 }
 
-func _PaginateService_Get_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(GetRequest)
+func _PaginateService_List_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ListRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(PaginateServiceServer).Get(m, &grpc.GenericServerStream[GetRequest, anypb.Any]{ServerStream: stream})
+	return srv.(PaginateServiceServer).List(m, &grpc.GenericServerStream[ListRequest, anypb.Any]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type PaginateService_GetServer = grpc.ServerStreamingServer[anypb.Any]
+type PaginateService_ListServer = grpc.ServerStreamingServer[anypb.Any]
+
+func _PaginateService_Query_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PaginateServiceServer).Query(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PaginateService_Query_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PaginateServiceServer).Query(ctx, req.(*QueryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
 
 // PaginateService_ServiceDesc is the grpc.ServiceDesc for PaginateService service.
 // It's only intended for direct use with grpc.RegisterService,
@@ -113,11 +147,16 @@ type PaginateService_GetServer = grpc.ServerStreamingServer[anypb.Any]
 var PaginateService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "filtrify.paginate.v1.PaginateService",
 	HandlerType: (*PaginateServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Query",
+			Handler:    _PaginateService_Query_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "Get",
-			Handler:       _PaginateService_Get_Handler,
+			StreamName:    "List",
+			Handler:       _PaginateService_List_Handler,
 			ServerStreams: true,
 		},
 	},

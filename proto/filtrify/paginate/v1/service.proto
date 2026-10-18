@@ -2,46 +2,10 @@ syntax = "proto3";
 
 package filtrify.paginate.v1;
 
-import "filtrify/ast/v1/ast.proto";
+import "filtrify/paginate/v1/paginate.proto";
 import "google/protobuf/any.proto";
-import "google/protobuf/field_mask.proto";
 
 service PaginateService {
-  rpc Get(GetRequest) returns (stream google.protobuf.Any);
-  // rpc Query(GetRequest) returns (stream google.protobuf.Any);
+  rpc List(filtrify.paginate.v1.ListRequest) returns (stream google.protobuf.Any);
+  rpc Query(filtrify.paginate.v1.QueryRequest) returns (filtrify.paginate.v1.QueryResponse);
 }
-
-enum Direction {
-  DIRECTION_ASC = 0;
-  DIRECTION_DESC = 1;
-}
-
-message OrderField {
-  string field = 1;
-  Direction direction = 2;
-}
-
-message Paging {
-  int32 first = 1;
-  string after = 2;
-}
-
-message GetRequest {
-  string entity = 1;
-  google.protobuf.FieldMask fieldmask = 2;
-
-  filtrify.ast.v1.Expr search = 5;
-  repeated OrderField order = 6;
-  Paging paging = 7;
-}
-
-// message QueryResponse {
-//     int32 total = 1;
-//     repeated Page pages = 2;
-//     repeated google.protobuf.Any data = 3;
-// }
-
-// message Page {
-//     string first_cursor = 1;
-//     string last_cursor = 2;
-// }
