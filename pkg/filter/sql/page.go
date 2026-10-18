@@ -23,11 +23,11 @@ func (s *Schema) Page(order []*paginatev1.OrderField, paging *paginatev1.Paging,
 	if s.Key.SQL == "" {
 		return nil, errors.New("sql: schema has no Key, so it can't be paginated")
 	}
-	kinds := map[string]filter.Kind{keyName: s.Key.Kind}
+	kinds := map[string]filter.Kind{KeyField: s.Key.Kind}
 	for _, name := range s.Sortable {
 		kinds[name] = s.Columns[name].Kind
 	}
-	fields, err := filter.ResolveOrder(order, kinds, def, keyName)
+	fields, err := filter.ResolveOrder(order, kinds, def, KeyField)
 	if err != nil {
 		return nil, err
 	}
@@ -42,11 +42,12 @@ func (s *Schema) Page(order []*paginatev1.OrderField, paging *paginatev1.Paging,
 	return &Page{schema: s, fields: fields, after: after, size: size}, nil
 }
 
-// keyName is how orders and cursors refer to Schema.Key.
-const keyName = "id"
+// KeyField is how orders and cursors refer to Schema.Key. Passed as the
+// default field to Page, it orders by the key alone.
+const KeyField = "id"
 
 func (p *Page) col(name string) string {
-	if name == keyName {
+	if name == KeyField {
 		return p.schema.Key.SQL
 	}
 	return p.schema.Columns[name].SQL

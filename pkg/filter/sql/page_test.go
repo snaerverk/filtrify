@@ -102,3 +102,13 @@ func TestPageWithoutKey(t *testing.T) {
 		t.Fatalf("err = %v, want a schema error (not the client's fault)", err)
 	}
 }
+
+func TestPageByKeyOnly(t *testing.T) {
+	p, err := pageSchema.Page(nil, nil, KeyField)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := p.OrderBy(), "p.id ASC"; got != want {
+		t.Errorf("order by %q, want %q", got, want)
+	}
+}
