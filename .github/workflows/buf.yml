@@ -4,6 +4,7 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_call:
 
 permissions:
   contents: read
@@ -18,7 +19,12 @@ jobs:
           fetch-depth: 0 # breaking check compares against the base branch
       - uses: bufbuild/buf-action@v1
         with:
-          # build, lint, format and (on PRs) breaking run by default
+          # lint and format default to PRs only; run them everywhere, including
+          # when called from the release workflow. Breaking runs on PRs unless
+          # the "buf skip breaking" label is set.
+          lint: true
+          format: true
+          # Pushing to the BSR happens in release.yml, on tags only.
           push: false
 
       - name: Check generated code is up to date

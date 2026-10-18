@@ -1,0 +1,42 @@
+name: release
+
+on:
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+
+permissions:
+  contents: read
+
+jobs:
+  buf:
+    uses: ./.github/workflows/buf.yml
+    permissions:
+      contents: read
+      pull-requests: write # requested by buf.yml; unused outside PRs
+  go:
+    uses: ./.github/workflows/go.yml
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [buf, go]
+    permissions:
+      contents: write # gh release create
+    steps:
+      - uses: actions/checkout@v7
+      # buf-push-action is archived; buf-action's push step replaces it and
+      # labels the BSR commit with the tag via --git-metadata.
+      - uses: bufbuild/buf-action@v1
+        with:
+          token: ${{ secrets.BUF_TOKEN }}
+          push: true
+          push_disable_create: true
+          lint: false
+          format: false
+          breaking: false
+      # actions/create-release is archived; the gh CLI is preinstalled on the
+      # runner and needs no third-party action.
+      - name: Create release
+        run: gh release create "$GITHUB_REF_NAME" --title "Release $GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
