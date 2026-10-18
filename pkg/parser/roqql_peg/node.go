@@ -50,7 +50,7 @@ func (cn *ComparisonNode) GetValue() (*astv1.Value, error) {
 }
 
 func (cn *ComparisonNode) Expr() (*astv1.Expr, error) {
-	op := "eq"
+	var op string
 	switch cn.GetOperator() {
 	case "=", "==", ":", "eq", "equal":
 		op = "eq"
@@ -64,6 +64,8 @@ func (cn *ComparisonNode) Expr() (*astv1.Expr, error) {
 		op = "gt"
 	case "<", "lt":
 		op = "lt"
+	default:
+		return nil, fmt.Errorf("unknown operator %q", cn.GetOperator())
 	}
 	val, err := cn.GetValue()
 	return &astv1.Expr{

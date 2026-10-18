@@ -25,7 +25,7 @@ message Value {
   oneof value {
     bool bool = 1;
     int64 integer = 2;
-    float float = 3;
+    double float = 3;
     string string = 4;
     List list = 5;
   }

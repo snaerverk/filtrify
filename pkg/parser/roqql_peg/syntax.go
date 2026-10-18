@@ -11,7 +11,7 @@ import (
 type Parser struct{}
 
 func (p *Parser) Parse(ctx context.Context, r io.Reader) (*astv1.Expr, error) {
-	res, err := ParseReader("/dev/null", r)
+	res, err := ParseReader("filter", r)
 	if err != nil {
 		return nil, err
 	}
