@@ -1,6 +1,7 @@
 package sql
 
 import (
+	"errors"
 	filter "github.com/snaerverk/filtrify/pkg/filter"
 	"strings"
 	"time"
@@ -19,6 +20,9 @@ type Page struct {
 // Page resolves order and paging against the schema's Sortable columns plus
 // its Key. def is the field to order by when order is empty.
 func (s *Schema) Page(order []*paginatev1.OrderField, paging *paginatev1.Paging, def string) (*Page, error) {
+	if s.Key.SQL == "" {
+		return nil, errors.New("sql: schema has no Key, so it can't be paginated")
+	}
 	kinds := map[string]filter.Kind{keyName: s.Key.Kind}
 	for _, name := range s.Sortable {
 		kinds[name] = s.Columns[name].Kind

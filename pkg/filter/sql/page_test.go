@@ -95,3 +95,10 @@ func TestPageInvalid(t *testing.T) {
 		})
 	}
 }
+
+func TestPageWithoutKey(t *testing.T) {
+	noKey := &Schema{Columns: pageSchema.Columns, Sortable: pageSchema.Sortable}
+	if _, err := noKey.Page(nil, nil, "tenant"); err == nil || errors.Is(err, filter.ErrInvalid) {
+		t.Fatalf("err = %v, want a schema error (not the client's fault)", err)
+	}
+}
