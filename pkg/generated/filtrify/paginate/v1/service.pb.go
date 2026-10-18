@@ -7,13 +7,10 @@
 package paginatev1
 
 import (
-	v1 "github.com/snaerverk/filtrify/pkg/generated/filtrify/ast/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	anypb "google.golang.org/protobuf/types/known/anypb"
-	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	reflect "reflect"
-	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -24,294 +21,32 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Direction int32
-
-const (
-	Direction_DIRECTION_ASC  Direction = 0
-	Direction_DIRECTION_DESC Direction = 1
-)
-
-// Enum value maps for Direction.
-var (
-	Direction_name = map[int32]string{
-		0: "DIRECTION_ASC",
-		1: "DIRECTION_DESC",
-	}
-	Direction_value = map[string]int32{
-		"DIRECTION_ASC":  0,
-		"DIRECTION_DESC": 1,
-	}
-)
-
-func (x Direction) Enum() *Direction {
-	p := new(Direction)
-	*p = x
-	return p
-}
-
-func (x Direction) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Direction) Descriptor() protoreflect.EnumDescriptor {
-	return file_filtrify_paginate_v1_service_proto_enumTypes[0].Descriptor()
-}
-
-func (Direction) Type() protoreflect.EnumType {
-	return &file_filtrify_paginate_v1_service_proto_enumTypes[0]
-}
-
-func (x Direction) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use Direction.Descriptor instead.
-func (Direction) EnumDescriptor() ([]byte, []int) {
-	return file_filtrify_paginate_v1_service_proto_rawDescGZIP(), []int{0}
-}
-
-type OrderField struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Field         string                 `protobuf:"bytes,1,opt,name=field,proto3" json:"field,omitempty"`
-	Direction     Direction              `protobuf:"varint,2,opt,name=direction,proto3,enum=filtrify.paginate.v1.Direction" json:"direction,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *OrderField) Reset() {
-	*x = OrderField{}
-	mi := &file_filtrify_paginate_v1_service_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *OrderField) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*OrderField) ProtoMessage() {}
-
-func (x *OrderField) ProtoReflect() protoreflect.Message {
-	mi := &file_filtrify_paginate_v1_service_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use OrderField.ProtoReflect.Descriptor instead.
-func (*OrderField) Descriptor() ([]byte, []int) {
-	return file_filtrify_paginate_v1_service_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *OrderField) GetField() string {
-	if x != nil {
-		return x.Field
-	}
-	return ""
-}
-
-func (x *OrderField) GetDirection() Direction {
-	if x != nil {
-		return x.Direction
-	}
-	return Direction_DIRECTION_ASC
-}
-
-type Paging struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	First         int32                  `protobuf:"varint,1,opt,name=first,proto3" json:"first,omitempty"`
-	After         string                 `protobuf:"bytes,2,opt,name=after,proto3" json:"after,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Paging) Reset() {
-	*x = Paging{}
-	mi := &file_filtrify_paginate_v1_service_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Paging) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Paging) ProtoMessage() {}
-
-func (x *Paging) ProtoReflect() protoreflect.Message {
-	mi := &file_filtrify_paginate_v1_service_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Paging.ProtoReflect.Descriptor instead.
-func (*Paging) Descriptor() ([]byte, []int) {
-	return file_filtrify_paginate_v1_service_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *Paging) GetFirst() int32 {
-	if x != nil {
-		return x.First
-	}
-	return 0
-}
-
-func (x *Paging) GetAfter() string {
-	if x != nil {
-		return x.After
-	}
-	return ""
-}
-
-type GetRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Entity        string                 `protobuf:"bytes,1,opt,name=entity,proto3" json:"entity,omitempty"`
-	Fieldmask     *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=fieldmask,proto3" json:"fieldmask,omitempty"`
-	Search        *v1.Expr               `protobuf:"bytes,5,opt,name=search,proto3" json:"search,omitempty"`
-	Order         []*OrderField          `protobuf:"bytes,6,rep,name=order,proto3" json:"order,omitempty"`
-	Paging        *Paging                `protobuf:"bytes,7,opt,name=paging,proto3" json:"paging,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetRequest) Reset() {
-	*x = GetRequest{}
-	mi := &file_filtrify_paginate_v1_service_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetRequest) ProtoMessage() {}
-
-func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_filtrify_paginate_v1_service_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
-func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_filtrify_paginate_v1_service_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *GetRequest) GetEntity() string {
-	if x != nil {
-		return x.Entity
-	}
-	return ""
-}
-
-func (x *GetRequest) GetFieldmask() *fieldmaskpb.FieldMask {
-	if x != nil {
-		return x.Fieldmask
-	}
-	return nil
-}
-
-func (x *GetRequest) GetSearch() *v1.Expr {
-	if x != nil {
-		return x.Search
-	}
-	return nil
-}
-
-func (x *GetRequest) GetOrder() []*OrderField {
-	if x != nil {
-		return x.Order
-	}
-	return nil
-}
-
-func (x *GetRequest) GetPaging() *Paging {
-	if x != nil {
-		return x.Paging
-	}
-	return nil
-}
-
 var File_filtrify_paginate_v1_service_proto protoreflect.FileDescriptor
 
 const file_filtrify_paginate_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\"filtrify/paginate/v1/service.proto\x12\x14filtrify.paginate.v1\x1a\x19filtrify/ast/v1/ast.proto\x1a\x19google/protobuf/any.proto\x1a google/protobuf/field_mask.proto\"a\n" +
-	"\n" +
-	"OrderField\x12\x14\n" +
-	"\x05field\x18\x01 \x01(\tR\x05field\x12=\n" +
-	"\tdirection\x18\x02 \x01(\x0e2\x1f.filtrify.paginate.v1.DirectionR\tdirection\"4\n" +
-	"\x06Paging\x12\x14\n" +
-	"\x05first\x18\x01 \x01(\x05R\x05first\x12\x14\n" +
-	"\x05after\x18\x02 \x01(\tR\x05after\"\xfb\x01\n" +
-	"\n" +
-	"GetRequest\x12\x16\n" +
-	"\x06entity\x18\x01 \x01(\tR\x06entity\x128\n" +
-	"\tfieldmask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\tfieldmask\x12-\n" +
-	"\x06search\x18\x05 \x01(\v2\x15.filtrify.ast.v1.ExprR\x06search\x126\n" +
-	"\x05order\x18\x06 \x03(\v2 .filtrify.paginate.v1.OrderFieldR\x05order\x124\n" +
-	"\x06paging\x18\a \x01(\v2\x1c.filtrify.paginate.v1.PagingR\x06paging*2\n" +
-	"\tDirection\x12\x11\n" +
-	"\rDIRECTION_ASC\x10\x00\x12\x12\n" +
-	"\x0eDIRECTION_DESC\x10\x012R\n" +
-	"\x0fPaginateService\x12?\n" +
-	"\x03Get\x12 .filtrify.paginate.v1.GetRequest\x1a\x14.google.protobuf.Any0\x01B\xe7\x01\n" +
+	"\"filtrify/paginate/v1/service.proto\x12\x14filtrify.paginate.v1\x1a#filtrify/paginate/v1/paginate.proto\x1a\x19google/protobuf/any.proto2\xa6\x01\n" +
+	"\x0fPaginateService\x12A\n" +
+	"\x04List\x12!.filtrify.paginate.v1.ListRequest\x1a\x14.google.protobuf.Any0\x01\x12P\n" +
+	"\x05Query\x12\".filtrify.paginate.v1.QueryRequest\x1a#.filtrify.paginate.v1.QueryResponseB\xe7\x01\n" +
 	"\x18com.filtrify.paginate.v1B\fServiceProtoP\x01ZKgithub.com/snaerverk/filtrify/pkg/generated/filtrify/paginate/v1;paginatev1\xa2\x02\x03FPX\xaa\x02\x14Filtrify.Paginate.V1\xca\x02\x14Filtrify\\Paginate\\V1\xe2\x02 Filtrify\\Paginate\\V1\\GPBMetadata\xea\x02\x16Filtrify::Paginate::V1b\x06proto3"
 
-var (
-	file_filtrify_paginate_v1_service_proto_rawDescOnce sync.Once
-	file_filtrify_paginate_v1_service_proto_rawDescData []byte
-)
-
-func file_filtrify_paginate_v1_service_proto_rawDescGZIP() []byte {
-	file_filtrify_paginate_v1_service_proto_rawDescOnce.Do(func() {
-		file_filtrify_paginate_v1_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_filtrify_paginate_v1_service_proto_rawDesc), len(file_filtrify_paginate_v1_service_proto_rawDesc)))
-	})
-	return file_filtrify_paginate_v1_service_proto_rawDescData
-}
-
-var file_filtrify_paginate_v1_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_filtrify_paginate_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_filtrify_paginate_v1_service_proto_goTypes = []any{
-	(Direction)(0),                // 0: filtrify.paginate.v1.Direction
-	(*OrderField)(nil),            // 1: filtrify.paginate.v1.OrderField
-	(*Paging)(nil),                // 2: filtrify.paginate.v1.Paging
-	(*GetRequest)(nil),            // 3: filtrify.paginate.v1.GetRequest
-	(*fieldmaskpb.FieldMask)(nil), // 4: google.protobuf.FieldMask
-	(*v1.Expr)(nil),               // 5: filtrify.ast.v1.Expr
-	(*anypb.Any)(nil),             // 6: google.protobuf.Any
+	(*ListRequest)(nil),   // 0: filtrify.paginate.v1.ListRequest
+	(*QueryRequest)(nil),  // 1: filtrify.paginate.v1.QueryRequest
+	(*anypb.Any)(nil),     // 2: google.protobuf.Any
+	(*QueryResponse)(nil), // 3: filtrify.paginate.v1.QueryResponse
 }
 var file_filtrify_paginate_v1_service_proto_depIdxs = []int32{
-	0, // 0: filtrify.paginate.v1.OrderField.direction:type_name -> filtrify.paginate.v1.Direction
-	4, // 1: filtrify.paginate.v1.GetRequest.fieldmask:type_name -> google.protobuf.FieldMask
-	5, // 2: filtrify.paginate.v1.GetRequest.search:type_name -> filtrify.ast.v1.Expr
-	1, // 3: filtrify.paginate.v1.GetRequest.order:type_name -> filtrify.paginate.v1.OrderField
-	2, // 4: filtrify.paginate.v1.GetRequest.paging:type_name -> filtrify.paginate.v1.Paging
-	3, // 5: filtrify.paginate.v1.PaginateService.Get:input_type -> filtrify.paginate.v1.GetRequest
-	6, // 6: filtrify.paginate.v1.PaginateService.Get:output_type -> google.protobuf.Any
-	6, // [6:7] is the sub-list for method output_type
-	5, // [5:6] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	0, // 0: filtrify.paginate.v1.PaginateService.List:input_type -> filtrify.paginate.v1.ListRequest
+	1, // 1: filtrify.paginate.v1.PaginateService.Query:input_type -> filtrify.paginate.v1.QueryRequest
+	2, // 2: filtrify.paginate.v1.PaginateService.List:output_type -> google.protobuf.Any
+	3, // 3: filtrify.paginate.v1.PaginateService.Query:output_type -> filtrify.paginate.v1.QueryResponse
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_filtrify_paginate_v1_service_proto_init() }
@@ -319,20 +54,19 @@ func file_filtrify_paginate_v1_service_proto_init() {
 	if File_filtrify_paginate_v1_service_proto != nil {
 		return
 	}
+	file_filtrify_paginate_v1_paginate_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_filtrify_paginate_v1_service_proto_rawDesc), len(file_filtrify_paginate_v1_service_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   3,
+			NumEnums:      0,
+			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_filtrify_paginate_v1_service_proto_goTypes,
 		DependencyIndexes: file_filtrify_paginate_v1_service_proto_depIdxs,
-		EnumInfos:         file_filtrify_paginate_v1_service_proto_enumTypes,
-		MessageInfos:      file_filtrify_paginate_v1_service_proto_msgTypes,
 	}.Build()
 	File_filtrify_paginate_v1_service_proto = out.File
 	file_filtrify_paginate_v1_service_proto_goTypes = nil
