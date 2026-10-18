@@ -12,6 +12,36 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # pkg/filter/sql runs its database tests against SQLite always, and
+    # against the MySQL flavor and PostgreSQL below via the DSN variables.
+    strategy:
+      fail-fast: false
+      matrix:
+        mysql: ["mariadb:11", "mysql:8.4"]
+    services:
+      mysql:
+        image: ${{ matrix.mysql }}
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: root
+          MARIADB_DATABASE: filtrify
+          MYSQL_DATABASE: filtrify
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -proot || mariadb-admin ping -h 127.0.0.1 -proot"
+          --health-interval 5s --health-timeout 5s --health-retries 30
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: filtrify
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 30
+    env:
+      FILTRIFY_TEST_MYSQL_DSN: root:root@tcp(127.0.0.1:3306)/filtrify
+      FILTRIFY_TEST_POSTGRES_DSN: postgres://postgres:root@127.0.0.1:5432/filtrify?sslmode=disable
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-go@v7

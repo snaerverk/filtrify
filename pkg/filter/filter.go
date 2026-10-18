@@ -55,7 +55,8 @@ func Invalid(format string, args ...any) error {
 }
 
 // Value converts a literal to the Go value of kind: string, int64, bool or
-// time.Time.
+// time.Time. Times are in UTC, so they also compare correctly where they are
+// stored as text (SQLite).
 func Value(field string, kind Kind, v *astv1.Value) (any, error) {
 	switch kind {
 	case String:
@@ -73,10 +74,10 @@ func Value(field string, kind Kind, v *astv1.Value) (any, error) {
 	case Time:
 		if s, ok := v.GetValue().(*astv1.Value_String_); ok {
 			if t, err := time.Parse(time.RFC3339Nano, s.String_); err == nil {
-				return t, nil
+				return t.UTC(), nil
 			}
 			if t, err := time.Parse(time.DateOnly, s.String_); err == nil {
-				return t, nil
+				return t.UTC(), nil
 			}
 			return nil, Invalid("%s: %q is neither an RFC 3339 time nor a date", field, s.String_)
 		}
