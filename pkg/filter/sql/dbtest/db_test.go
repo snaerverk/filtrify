@@ -1,4 +1,4 @@
-package sql_test
+package dbtest_test
 
 // Runs the generated SQL against real databases: SQLite always (pure Go
 // driver), MySQL/MariaDB and PostgreSQL when their DSN is set:

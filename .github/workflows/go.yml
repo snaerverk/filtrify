@@ -12,8 +12,9 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # pkg/filter/sql runs its database tests against SQLite always, and
-    # against the MySQL flavor and PostgreSQL below via the DSN variables.
+    # pkg/filter/sql/dbtest (a nested module, so the drivers stay out of the
+    # main go.mod) runs against SQLite always, and against the MySQL flavor
+    # and PostgreSQL below via the DSN variables.
     strategy:
       fail-fast: false
       matrix:
@@ -49,3 +50,7 @@ jobs:
           go-version-file: go.mod
       - run: go vet ./...
       - run: go test -race ./...
+      - run: go vet ./...
+        working-directory: pkg/filter/sql/dbtest
+      - run: go test -race ./...
+        working-directory: pkg/filter/sql/dbtest
