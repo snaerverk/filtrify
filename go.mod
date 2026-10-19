@@ -3,6 +3,7 @@ module github.com/snaerverk/filtrify
 go 1.27
 
 require (
+	github.com/snaerverk/protoc-gen-go-sqlmap v0.1.1
 	google.golang.org/grpc v1.84.0
 	google.golang.org/protobuf v1.36.12
 )
